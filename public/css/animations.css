@@ -1,0 +1,39 @@
+/* File: public/css/animations.css */
+
+/* --- Loading Spinner --- */
+.loader {
+    width: 60px;
+    height: 60px;
+    border: 5px solid #f3f3f3; /* Light grey circle */
+    border-top: 5px solid var(--primary-color); /* Blue for the moving part */
+    border-radius: 50%;
+    margin: 2rem auto;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- Fade-in animation for cards --- */
+.suggestion-card {
+    animation: fadeIn 0.5s ease-in-out forwards;
+    opacity: 0;
+}
+
+/* Add a slight delay for the second card */
+.suggestion-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>وين أروح؟</title>
+    <meta name="description" content="تخلص من حيرة كل يوم. اقتراحان فقط, قرار واحد سهل.">
+
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+
+<header class="main-header">
+    <img src="assets/images/logo.png" alt="شعار وين أروح؟" class="header-logo">
+    <p>رفيقك اليومي لقرار سهل وممتع</p>
+
+    <div class="header-user-area">
+        <!-- قسم النقاط والمحاولات -->
+        <div class="user-stats">
+            <div id="points-container" class="stat-item hidden">
+                <i class="fas fa-star"></i>
+                <span id="points-balance">0</span>
+            </div>
+            <div id="attempts-container" class="stat-item hidden">
+                <i class="fas fa-dice"></i>
+                <span id="attempts-balance">0</span>
+            </div>
+        </div>
+
+        <!-- ✨ قسم المصادقة (يظهر للزوار) -->
+        <div id="auth-container">
+            <a href="/api/auth/google" id="google-login-btn" class="auth-button google-button">
+                <i class="fab fa-google"></i> <span>تسجيل الدخول</span>
+            </a>
+        </div>
+
+        <!-- ✨ قسم ملف المستخدم (يظهر بعد تسجيل الدخول) -->
+        <div id="user-profile" class="user-profile hidden">
+            <img id="user-avatar" src="" alt="صورة المستخدم">
+            <span id="user-name"></span>
+            <a href="/api/auth/logout" class="logout-link" title="تسجيل الخروج"><i class="fas fa-sign-out-alt"></i></a>
+        </div>
+    </div>
+</header>
+
+<main class="container">
+    <section id="preferences-section" class="card">
+        <h2>أخبرنا عنك</h2>
+        <form id="preferences-form">
+            <div class="form-group">
+                <label>أنا:</label>
+                <div class="icon-group" id="userType-group">
+                    <label>
+                        <input type="radio" name="userType" value="individual" checked>
+                        <div class="icon-box">
+                            <i class="fas fa-user"></i>
+                            <span>فرد</span>
+                        </div>
+                    </label>
+                    <label>
+                        <input type="radio" name="userType" value="couple">
+                        <div class="icon-box">
+                            <i class="fas fa-user-friends"></i>
+                            <span>شخصان</span>
+                        </div>
+                    </label>
+                    <label>
+                        <input type="radio" name="userType" value="family">
+                        <div class="icon-box">
+                            <i class="fas fa-users"></i>
+                            <span>عائلة</span>
+                        </div>
+                    </label>
+                    <label>
+                        <input type="radio" name="userType" value="group">
+                        <div class="icon-box">
+                            <i class="fas fa-people-group"></i>
+                            <span>مجموعة</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>أهتم بـ:</label>
+                <div class="radio-group" id="interest-group">
+                    <label><input type="radio" name="interest" value="مقهى متخصص" checked> مقاهي</label>
+                    <label><input type="radio" name="interest" value="مطعم إيطالي,مطعم كويتي,مطعم آسيوي,مطعم أمريكي,مطعم فطور وعائلي"> مطاعم</label>
+                    <label><input type="radio" name="interest" value="ترفيه ونشاط"> أنشطة</label>
+                    <label><input type="radio" name="interest" value="مجمع تجاري"> تسوق</label>
+                </div>
+            </div>
+            <button type="submit" class="main-button">اكتشف وجهتك اليوم!</button>
+        </form>
+    </section>
+
+    <section id="results-section" class="hidden">
+        <div id="loader" class="loader hidden"></div>
+        <div id="suggestions-container" class="suggestions-grid"></div>
+        <div id="system-message-container" class="hidden"></div>
+    </section>
+</main>
+
+<footer class="main-footer">
+    <p>
+        Developed by: <a href="https://www.olosolutions.cc/" target="_blank" rel="noopener noreferrer">Olosolutions</a>
+    </p>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>

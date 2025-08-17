@@ -1,0 +1,35 @@
+{
+  "name": "ween-aro7",
+  "version": "1.0.0",
+  "description": "تطبيق ويب ذكي يقترح أماكن للخروج في الكويت.",
+  "main": "api/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon api/index.js",
+    "db:seed": "node database/seed.js",
+    "start": "node api/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "kuwait",
+    "places",
+    "suggestions",
+    "entertainment",
+    "restaurants"
+  ],
+  "author": "Your Name",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-session": "^1.18.2",
+    "mongoose": "^8.4.1",
+    "node-fetch": "^2.7.0",
+    "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.2"
+  }
+}
