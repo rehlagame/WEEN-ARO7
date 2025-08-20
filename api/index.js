@@ -1,4 +1,4 @@
-// File: api/index.js - ✅ نسخة محسنة: تستخدم MongoStore لتخزين الجلسات
+// File: api/index.js - ✅ نسخة نهائية ومحسنة للإنتاج
 
 import express from 'express';
 import mongoose from 'mongoose';
@@ -11,7 +11,7 @@ dotenv.config();
 import session from 'express-session';
 import passport from 'passport';
 import cookieParser from 'cookie-parser';
-import MongoStore from 'connect-mongo'; // ✨ 1. استيراد الحزمة الجديدة
+import MongoStore from 'connect-mongo';
 
 import suggestionRoutes from './routes/suggestions.js';
 import authRoutes from './routes/auth.routes.js';
@@ -35,32 +35,37 @@ app.use(express.json());
 
 const mongoUri = process.env.MONGO_URI;
 
-// ✨ 2. التحقق من وجود mongoUri قبل استخدامه في الجلسات
 if (!mongoUri) {
     console.error('🔴 MONGO_URI not found in .env file. Cannot start session store.');
-    process.exit(1); // إيقاف التطبيق إذا لم يكن رابط قاعدة البيانات موجودًا
+    process.exit(1);
 }
 
+// --- إعدادات الجلسات و Passport.js (محسنة للإنتاج) ---
+const isProduction = process.env.NODE_ENV === 'production';
 
-// --- إعدادات الجلسات و Passport.js ---
 app.use(cookieParser());
 
-// ✨ 3. تعديل إعدادات الجلسة لاستخدام MongoStore
+// ✨ Vercel يعمل كـ proxy, هذا الإعداد ضروري ليعمل الكوكي بشكل صحيح على HTTPS
+if (isProduction) {
+    app.set('trust proxy', 1);
+}
+
 app.use(session({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     store: MongoStore.create({
         mongoUrl: mongoUri,
-        collectionName: 'sessions' // اسم الـ collection الذي سيتم تخزين الجلسات فيه
+        collectionName: 'sessions'
     }),
     cookie: {
-        secure: process.env.NODE_ENV === 'production',
-        httpOnly: true, // ممارسة أمنية جيدة
-        maxAge: 1000 * 60 * 60 * 24 * 7 // صلاحية الكوكي لمدة 7 أيام
+        secure: isProduction, // true في الإنتاج (Vercel), false في التطوير المحلي
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7, // 7 أيام
+        // ✨ هذا الإعداد مهم جدًا لعملية إعادة التوجيه من Google
+        sameSite: isProduction ? 'lax' : undefined
     }
 }));
-
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -76,11 +81,9 @@ mongoose.connect(mongoUri)
     .then(() => console.log('✅ MongoDB connected successfully for API requests.'))
     .catch(err => console.error('🔴 MongoDB connection error:', err));
 
-
 // تعريف المسارات
 app.use('/api/auth', authRoutes);
 app.use('/api/suggestions', suggestionRoutes);
-
 
 if (process.env.NODE_ENV !== 'production') {
     const PORT = process.env.PORT || 3000;
