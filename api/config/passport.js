@@ -1,11 +1,11 @@
 // File: api/config/passport.js
-// ✅ نسخة مصححة: تم تحويل الكود إلى دالة لتجنب مشاكل ترتيب التحميل
+// ✅ نسخة مصححة ونهائية: تم تثبيت رابط الـ callbackURL بشكل كامل
 
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import mongoose from 'mongoose';
 import User from '../models/user.model.js';
 
-// ✨ الحل هنا: تغليف كل المنطق في دالة نقوم بتصديرها
+// ✨ تغليف كل المنطق في دالة نقوم بتصديرها
 export default function(passport) {
     // --- 1. Serialize & Deserialize User ---
     passport.serializeUser((user, done) => {
@@ -25,10 +25,12 @@ export default function(passport) {
     passport.use(
         new GoogleStrategy(
             {
-                // الآن، عندما يتم استدعاء هذه الدالة، ستكون متغيرات البيئة قد تم تحميلها بالتأكيد
                 clientID: process.env.GOOGLE_CLIENT_ID,
                 clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-                callbackURL: '/api/auth/google/callback',
+                // ✨✨✨ الحل النهائي هنا ✨✨✨
+                // نستخدم الرابط الكامل لضمان استخدام بروتوكول HTTPS دائمًا على Vercel
+                // وتجنب خطأ redirect_uri_mismatch
+                callbackURL: `${process.env.BASE_URL}/api/auth/google/callback`,
                 passReqToCallback: true,
             },
             async (req, accessToken, refreshToken, profile, done) => {
